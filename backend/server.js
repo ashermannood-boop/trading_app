@@ -10,7 +10,7 @@ import history from "connect-history-api-fallback";
 import connectToMongoDB from "./config/mongodb.js";
 import startBot from "./bot/index.js";
 
-// Routes
+// Routes //
 import userRouter from "./routes/userRoutes.js";
 import newsRouter from "./routes/newsRoutes.js";
 import loanRouter from "./routes/loanRoutes.js";

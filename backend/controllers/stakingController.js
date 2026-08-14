@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import userModel from "../models/userModel.js";
+//import userModel from "../models/userModel.js";
+import userModel from "../models/usermodel.js";
 import StakingPosition from "../models/StakingPosition.js";
 import StakingRewardLog from "../models/StakingRewardLog.js";
 
