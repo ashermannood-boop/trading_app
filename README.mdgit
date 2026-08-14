@@ -1,0 +1,1 @@
+"# trading_app"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/abdidev39-create/trading_app.gitgit push -u origin main
