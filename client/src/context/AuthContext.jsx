@@ -21,8 +21,7 @@ export const AuthProvider = ({ children }) => {
     const [demoBalance, setDemoBalance] = useState({ btc: 1, eth: 0, usdt: 0 });
 
     //const backendUrl = "https://trading-app-fdzj.onrender.com/"
-    const backendUrl =  API_URL
-
+    const backendUrl = `${API_URL}/`;
     // Admin state
     const [AuserData, AsetUserData] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
