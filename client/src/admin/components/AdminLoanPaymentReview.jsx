@@ -26,12 +26,14 @@ import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 // API configuration
-const API_URL = 'https://trading-app-fdzj.onrender.com/api';
+//const API_URL = 'https://trading-app-fdzj.onrender.com/api';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL + '/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'

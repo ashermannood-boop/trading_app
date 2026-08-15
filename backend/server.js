@@ -63,7 +63,9 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://www.zaytrade.com",
   "https://zaytrade.com",
-  "https://trading-app-fdzj.onrender.com"
+  "https://trading-app-fdzj.onrender.com",
+  "https://trading-app1-t0su.onrender.com",
+  
 ];
 
 app.use(

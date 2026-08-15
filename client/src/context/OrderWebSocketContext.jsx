@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useRef, useCallback } from
 import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import { useOrders } from './OrdersContext';
-
+const API_URL = import.meta.env.VITE_API_URL;
 const OrderWebSocketContext = createContext();
 
 export const OrderWebSocketProvider = ({ children }) => {
@@ -41,9 +41,10 @@ export const OrderWebSocketProvider = ({ children }) => {
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io("https://trading-app-fdzj.onrender.com", { 
+    socketRef.current = io(API_URL, { 
       transports: ["websocket"],
       path: '/socket.io', // or your custom path
+      //path:'socket.io',
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000

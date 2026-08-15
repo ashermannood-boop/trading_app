@@ -478,12 +478,12 @@ export default function ProfilePage() {
                 color="text-green-400"
                 onClick={() => navigate('/withdraw')}
               />
-              <ActionButton
+              {/* <ActionButton
                 icon={<BadgeDollarSign size={20} />}
                 label="Loan"
                 color="text-purple-400"
                 onClick={() => navigate('/loan')}
-              />
+              /> */}
               <ActionButton
                 icon={<Clock4 size={20} />}
                 label="History"
