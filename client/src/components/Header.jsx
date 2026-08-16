@@ -88,11 +88,11 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className=" space-x-2 flex items-center cursor-pointer" onClick={() => navigate('/')}>
-              {/* <img src={assets.logo} alt="Loading..." className="w-16 h-16 sm:w-20 md:h-20  " /> */}
+          <div className="flex items-center space-x-2">
+            <div className=" space-x-1 flex items-center cursor-pointer" onClick={() => navigate('/')}>
+              <img src={assets.logo} alt="Loading..." className="w-16 h-16 sm:w-20 md:h-20  " />
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                Logo
+                DeFi
               </span>
             </div>
 

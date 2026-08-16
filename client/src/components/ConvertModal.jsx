@@ -162,7 +162,7 @@ export default function ConvertModal({
         setConvertFrom("BTC");
         setErrorMessage("");
         onClose();
-        window.location.reload();
+        window.location.reload('/');
     };
 
     const handleQuickAmount = (value) => {

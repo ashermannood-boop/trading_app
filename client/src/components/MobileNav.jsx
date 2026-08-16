@@ -24,8 +24,8 @@ export default function MobileNav() {
     { icon: <Home size={18} />, label: "Home", path: "/" },
     { icon: <Wallet size={18} />, label: "Wallet", path: "/wallet" },
     {
-      icon: <ChartNoAxesCombined size={22} />,
-      label: "Market",
+      icon: <ArrowLeftRight size={22} />,
+      label: "Trade",
       path: "/markets",
       isCenter: true
     },

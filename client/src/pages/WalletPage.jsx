@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Eye, EyeOff, ChevronLeft,
   ArrowDownCircle, ArrowUpCircle,
   BadgeDollarSign, Clock4,
-  RefreshCw
+  RefreshCw, ArrowDownUp
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -13,9 +13,13 @@ import MobileNav from "../components/MobileNav";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 
+import ConvertModal from "../components/ConvertModal";
+
 export default function WalletPage() {
+
   const navigate = useNavigate();
-  const [showBalance, setShowBalance] = useState(false);
+  const [openConvert, setOpenConvert] = useState(false);
+  const [showBalance, setShowBalance] = useState(true);
   const { backendUrl, token } = useAuth();
   const [walletData, setWalletData] = useState({
     usdt: 0,
@@ -27,6 +31,27 @@ export default function WalletPage() {
   const [marketPrices, setMarketPrices] = useState(null);
   const [priceLoading, setPriceLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+
+  const cryptoAssets = useMemo(() => ({
+    BTC: {
+      icon: assets?.bitcoin,
+      color: "text-orange-500",
+      bgColor: "bg-orange-500/10",
+      borderColor: "border-orange-500/30",
+      price: marketPrices?.BTC?.price || 0,
+      change: marketPrices?.BTC?.change24h || 0,
+      name: "Bitcoin"
+    },
+    ETH: {
+      icon: assets?.ethereum,
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+      borderColor: "border-purple-500/30",
+      price: marketPrices?.ETH?.price || 0,
+      change: marketPrices?.ETH?.change24h || 0,
+      name: "Ethereum"
+    }
+  }), [marketPrices]);
 
   const getMarketPrices = async () => {
     try {
@@ -143,7 +168,7 @@ export default function WalletPage() {
   const quickActions = [
     { icon: <ArrowDownCircle size={20} />, label: "Deposit", color: "text-blue-400", route: "/deposit" },
     { icon: <ArrowUpCircle size={20} />, label: "Withdraw", color: "text-green-400", route: "/withdraw" },
-    //{ icon: <BadgeDollarSign size={20} />, label: "Loan", color: "text-purple-400", route: "/loan" },
+    { icon: <ArrowDownUp size={20} />, label: "Swap", color: "text-purple-400", route: "/" },
     { icon: <Clock4 size={20} />, label: "History", color: "text-gray-400", route: "/history" }
   ];
 
@@ -151,99 +176,102 @@ export default function WalletPage() {
     loading ? (
       <Loading text="Loading your wallet..." />
     ) : (
-      <div className="min-h-screen bg-gray-900 text-gray-100 mb-20">
-        <MobileNav />
+      <>
+        <div className="min-h-screen bg-gray-900 text-gray-100 mb-20">
+          <MobileNav />
 
-        {/* Header */}
-        <div className="hidden sm:block bg-gray-900 sticky top-0 z-50">
-          <div className="max-w-4xl mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => navigate("/")}
-                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              >
-                <ChevronLeft size={20} />
-                <span className="font-medium">Back</span>
-              </button>
-              <h1 className="text-lg font-semibold text-white">My Wallet</h1>
-              <div className="w-20"></div> {/* Spacer for alignment */}
+         
+
+          {/* Header */}
+          <div className="hidden sm:block bg-gray-900 sticky top-0 z-50">
+            <div className="max-w-4xl mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => navigate("/")}
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <ChevronLeft size={20} />
+                  <span className="font-medium">Back</span>
+                </button>
+                <h1 className="text-lg font-semibold text-white">My Wallet</h1>
+                <div className="w-20"></div> {/* Spacer for alignment */}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-2 py-6">
-          <div className="space-y-6">
+          {/* Main Content */}
+          <div className="max-w-4xl mx-auto px-2 py-6">
+            <div className="space-y-6">
 
-            {/* Balance Overview */}
-            <div className="bg-gray-900 rounded-lg sm:border border-gray-700 p-3 sm:p-6">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="text-md font-bold text-white">Wallet Balance</h2>
-                  {marketPrices && lastUpdated && (
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                      <p className="text-gray-400 text-xs">Live • Updated {formatTimeAgo(lastUpdated)}</p>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  {priceLoading && (
-                    <span className="text-xs text-gray-400">Refreshing...</span>
-                  )}
-                  <button
-                    onClick={() => setShowBalance(!showBalance)}
-                    className="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm font-medium text-gray-300"
-                  >
-                    {showBalance ? <EyeOff size={16} /> : <Eye size={16} />}
-                    <span>{showBalance ? "Hide" : "Show"}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Total Balance */}
-              <div className="bg-gray-700/50 rounded-lg p-4 mb-6 border border-gray-600">
-                <div className="flex justify-between items-start mb-1">
-                  <p className="text-gray-400 text-sm">Total Balance</p>
-                  {marketPrices && (
-                    <button
-                      onClick={getMarketPrices}
-                      disabled={priceLoading}
-                      className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-50"
-                      title="Refresh prices"
-                    >
-                      <RefreshCw size={12} className={priceLoading ? "animate-spin" : ""} />
-                      {priceLoading ? "Refreshing..." : "Refresh"}
-                    </button>
-                  )}
-                </div>
-                <div className="flex items-end justify-between">
+              {/* Balance Overview */}
+              <div className="bg-gray-900 rounded-lg sm:border border-gray-700 p-3 sm:p-6">
+                <div className="flex justify-between items-center mb-6">
                   <div>
-                    <p className="text-2xl font-bold text-white mb-1">
-                      {showBalance ? `$${totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "••••••"}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      {showBalance && marketPrices && totalChange !== 0 && (
-                        <>
-                          <span className={`text-sm font-medium ${totalChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {totalChange >= 0 ? '+' : ''}{totalChange.toFixed(2)}%
-                          </span>
-                          <span className={`text-sm ${totalChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {totalChange >= 0 ? '+' : ''}${Math.abs(totalChangeAmount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                          </span>
-                          <span className="text-gray-500 text-sm">
-                            (24h)
-                          </span>
-                        </>
-                      )}
+                    <h2 className="text-md font-bold text-white">Wallet Balance</h2>
+                    {marketPrices && lastUpdated && (
+                      <div className="flex items-center gap-2 mt-1">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <p className="text-gray-400 text-xs">Live • Updated {formatTimeAgo(lastUpdated)}</p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {priceLoading && (
+                      <span className="text-xs text-gray-400">Refreshing...</span>
+                    )}
+                    <button
+                      onClick={() => setShowBalance(!showBalance)}
+                      className="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm font-medium text-gray-300"
+                    >
+                      {showBalance ? <EyeOff size={16} /> : <Eye size={16} />}
+                      <span>{showBalance ? "Hide" : "Show"}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Total Balance */}
+                <div className="bg-gray-700/50 rounded-lg p-4 mb-6 border border-gray-600">
+                  <div className="flex justify-between items-start mb-1">
+                    <p className="text-gray-400 text-sm">Total Balance</p>
+                    {marketPrices && (
+                      <button
+                        onClick={getMarketPrices}
+                        disabled={priceLoading}
+                        className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-50"
+                        title="Refresh prices"
+                      >
+                        <RefreshCw size={12} className={priceLoading ? "animate-spin" : ""} />
+                        {priceLoading ? "Refreshing..." : "Refresh"}
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-2xl font-bold text-white mb-1">
+                        {showBalance ? `$${totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "••••••"}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        {showBalance && marketPrices && totalChange !== 0 && (
+                          <>
+                            <span className={`text-sm font-medium ${totalChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                              {totalChange >= 0 ? '+' : ''}{totalChange.toFixed(2)}%
+                            </span>
+                            <span className={`text-sm ${totalChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                              {totalChange >= 0 ? '+' : ''}${Math.abs(totalChangeAmount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </span>
+                            <span className="text-gray-500 text-sm">
+                              (24h)
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Balance Breakdown */}
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                {/* <BalanceCard
+                {/* Balance Breakdown */}
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  {/* <BalanceCard
                   label="Available"
                   value={walletData.usdt}
                   showBalance={showBalance}
@@ -255,51 +283,51 @@ export default function WalletPage() {
                   showBalance={showBalance}
                   color="text-blue-400"
                 /> */}
-                {/* <BalanceCard
+                  {/* <BalanceCard
                   label="Loans"
                   value={walletData.loanUsdt}
                   showBalance={showBalance}
                   color="text-purple-400"
                 /> */}
-              </div>
+                </div>
 
-              {/* Wallet Assets */}
-              <div className="pt-6 border-t border-gray-700">
-                <h3 className="font-semibold text-white mb-4">Wallet Assets</h3>
-                <div className="space-y-3">
-                  <AssetRow
-                    currency="USDT"
-                    balance={walletData.usdt}
-                    showBalance={showBalance}
-                    logo={assets.tether}
-                    usdValue={walletData.usdt}
-                    price={1}
-                    change={0}
-                    marketPrices={marketPrices}
-                  />
-                  <AssetRow
-                    currency="BTC"
-                    balance={walletData.btc}
-                    showBalance={showBalance}
-                    logo={assets.bitcoin}
-                    usdValue={walletData.btc * (marketPrices?.BTC?.price || 0)}
-                    price={marketPrices?.BTC?.price || 0}
-                    change={marketPrices?.BTC?.change24h || 0}
-                    marketPrices={marketPrices}
-                  />
-                  <AssetRow
-                    currency="ETH"
-                    balance={walletData.eth}
-                    showBalance={showBalance}
-                    logo={assets.ethereum}
-                    usdValue={walletData.eth * (marketPrices?.ETH?.price || 0)}
-                    price={marketPrices?.ETH?.price || 0}
-                    change={marketPrices?.ETH?.change24h || 0}
-                    marketPrices={marketPrices}
-                  />
+                {/* Wallet Assets */}
+                <div className="pt-6 border-t border-gray-700">
+                  <h3 className="font-semibold text-white mb-4">Wallet Assets</h3>
+                  <div className="space-y-3">
+                    <AssetRow
+                      currency="USDT"
+                      balance={walletData.usdt}
+                      showBalance={showBalance}
+                      logo={assets.tether}
+                      usdValue={walletData.usdt}
+                      price={1}
+                      change={0}
+                      marketPrices={marketPrices}
+                    />
+                    <AssetRow
+                      currency="BTC"
+                      balance={walletData.btc}
+                      showBalance={showBalance}
+                      logo={assets.bitcoin}
+                      usdValue={walletData.btc * (marketPrices?.BTC?.price || 0)}
+                      price={marketPrices?.BTC?.price || 0}
+                      change={marketPrices?.BTC?.change24h || 0}
+                      marketPrices={marketPrices}
+                    />
+                    <AssetRow
+                      currency="ETH"
+                      balance={walletData.eth}
+                      showBalance={showBalance}
+                      logo={assets.ethereum}
+                      usdValue={walletData.eth * (marketPrices?.ETH?.price || 0)}
+                      price={marketPrices?.ETH?.price || 0}
+                      change={marketPrices?.ETH?.change24h || 0}
+                      marketPrices={marketPrices}
+                    />
 
-                  {/* Loan Assets Section */}
-                  {/* <div className="mt-6 pt-4 border-t border-gray-700">
+                    {/* Loan Assets Section */}
+                    {/* <div className="mt-6 pt-4 border-t border-gray-700">
                     <h3 className="font-semibold text-white mb-4">Loan Assets</h3>
                     <AssetRow
                       currency="USDT Loan"
@@ -313,29 +341,56 @@ export default function WalletPage() {
                       isLoan={true}
                     />
                   </div> */}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Quick Actions */}
-            <div className="bg-gray-900 rounded-lg sm:border border-gray-700 p-3 sm:p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {quickActions.map((action, index) => (
-                  <ActionCard
-                    onClick={() => navigate(action.route)}
-                    key={index}
-                    icon={action.icon}
-                    label={action.label}
-                    color={action.color}
-                  />
-                ))}
+              {/* Quick Actions */}
+              <div className="bg-gray-900 rounded-lg sm:border border-gray-700 p-3 sm:p-6">
+                <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {quickActions.map((action, index) => (
+                    <ActionCard
+                      onClick={() => {
+                        if(action.label == 'Swap'){
+                          setOpenConvert(true)
+                        }else{
+                          navigate(action.route)
+                        }
+                        
+                      }}
+                      key={index}
+                      icon={action.icon}
+                      label={action.label}
+                      color={action.color}
+                    />
+                  ))}
+                  
+
+
+                </div>
+
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
-      </div>
+        {openConvert && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+            <ConvertModal
+              open={openConvert}
+              onClose={() => setOpenConvert(false)}
+              onConvertSuccess={(conversionData) => {
+                toast.success(`Converted ${conversionData.amount} ${conversionData.from} to USDT`);
+              }}
+              cryptoAssets={cryptoAssets}
+              userBalance={walletData}
+            />
+          </div>
+        )
+        }
+      </>
+
     )
   );
 }
