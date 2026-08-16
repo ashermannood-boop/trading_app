@@ -60,7 +60,7 @@ export default function AdminHome() {
       case 'loans':
         return <LoansPanel />;
       default:
-        return <AdminDashboard />;
+        return <UsersManagement/>;
     }
   };
 
