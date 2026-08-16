@@ -3,30 +3,29 @@ import userModel from '../models/usermodel.js'
 import { uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
 
 import NotificationService from '../services/notificationService.js';
-
 // Get deposit addresses
 const DEPOSIT_ADDRESSES = {
   BTC: {
-    Bitcoin: "bc1qrw5hd0fy9a7z3d0t5vumry44dmnlpjxwaq8zk9",
+    Bitcoin: "bc1qmy063afrcmejjk0w5rum8v4wd03em7trxsvacy",
     Lightning: ""
   },
   ETH: {
-    Ethereum: "0xa405e5F4297953fD9b7081AF10Ba5E718cDa22fD",
+    Ethereum: "0xE0C62E5C141295b739B061c49bcE45d13DDa6e0f",
     Arbitrum: ""
   },
   SOL: {
-    Solana: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3Qrk"
+    Solana: "FgnEzZyWjvLWrsyt9dkgeZSMNXbFvgY8FQPZ7XACkdRn"
   },
   XRP: {
-    Ripple: "rU6Koed8mwZp9XR8dJ6u1N4q3aUg2539aE"
+    Ripple: "rNRjicziHGy93EidfwPCBKMcLDWe4sdCNc"
   },
   USDT: {
-    "Tron (TRC20)": "TMPYc1bYVD3QrrcmmMmBsJEFkdzHpraYnG",
-    "Ethereum (ERC20)": "",
-    "BNB Smart Chain (BEP20)": ""
+    "Tron (TRC20)": "bc1qmy063afrcmejjk0w5rum8v4wd03em7trxsvacy",
+    "Ethereum (ERC20)": "0xE0C62E5C141295b739B061c49bcE45d13DDa6e0f",
+    "BNB Smart Chain (BEP20)": "0xE0C62E5C141295b739B061c49bcE45d13DDa6e0f"
   },
   USDC: {
-    "Ethereum (ERC20)": "",
+    "Ethereum (ERC20)": "0xE0C62E5C141295b739B061c49bcE45d13DDa6e0f",
     "Solana": "",
     "BNB Smart Chain (BEP20)": ""
   }
