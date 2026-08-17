@@ -168,7 +168,7 @@ export default function WalletPage() {
   const quickActions = [
     { icon: <ArrowDownCircle size={20} />, label: "Deposit", color: "text-blue-400", route: "/deposit" },
     { icon: <ArrowUpCircle size={20} />, label: "Withdraw", color: "text-green-400", route: "/withdraw" },
-    { icon: <ArrowDownUp size={20} />, label: "Swap", color: "text-purple-400", route: "/" },
+    { icon: <ArrowDownUp size={20} />, label: "Swap ", color: "text-purple-400", route: "/" },
     { icon: <Clock4 size={20} />, label: "History", color: "text-gray-400", route: "/history" }
   ];
 

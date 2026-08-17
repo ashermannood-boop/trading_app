@@ -310,7 +310,7 @@ export default function ProfilePage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 ">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between"> 
             <button
               onClick={() => navigate(-1)}
               className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
