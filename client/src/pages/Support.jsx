@@ -63,7 +63,7 @@ const Support = () => {
                 </p>
               </div>
               <a 
-                href="mailto:zayytrade@gmail.com" 
+                href="mailto:lucasgjs890@gmail.com" 
                 className="w-full md:w-auto px-10 py-5 bg-blue-500 text-[#05070A] font-black rounded-2xl text-xs uppercase tracking-widest text-center shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:shadow-blue-500/40 hover:scale-[1.02] transition-all"
               >
                 Send Message
