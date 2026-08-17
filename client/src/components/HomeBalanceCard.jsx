@@ -137,7 +137,7 @@ export default function HomeBalanceCard({
 
         <button
           onClick={onOpenConvert}
-          className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gray-800/80 hover:bg-gray-800 text-purple-400 font-medium text-xs transition-all border border-purple-500/20 active:scale-95"
+          className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gray-800/80 hover:bg-gray-800 text-white font-medium text-xs transition-all border border-purple-500/20 active:scale-95"
         >
           <Repeat size={16} />
           <span>Swap</span>

@@ -92,7 +92,7 @@ const Header = () => {
             <div className=" space-x-1 flex items-center cursor-pointer" onClick={() => navigate('/')}>
               <img src={assets.logo} alt="Loading..." className="w-16 h-16 sm:w-20 md:h-20  " />
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                DeFi
+                CTN
               </span>
             </div>
 
