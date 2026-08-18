@@ -15,14 +15,17 @@ const TawkButton = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Optional: Skip in development mode if desired (change to `false` to test locally)
-    
+    // Skip during development if desired (set to false to enable in dev)
+    if (process.env.NODE_ENV === "development") {
+      setLoading(false);
+      return;
+    }
 
     // 1. Pre-configure Tawk before the script loads
     window.Tawk_API = window.Tawk_API || {};
     window.Tawk_LoadStart = new Date();
 
-    // Hides default Tawk bubble before it renders
+    // Hides default Tawk widget bubble before it renders
     window.Tawk_API.onLoad = function () {
       window.Tawk_API.hideWidget();
       setLoading(false);
@@ -39,7 +42,7 @@ const TawkButton = () => {
       const script = document.createElement("script");
       script.id = "tawk-script";
       script.async = true;
-      script.src = "https://embed.tawk.to/6a849bb727f5991d51f60256/1k0b00i2p";
+      script.src = "https://embed.tawk.to/6a849bb727f5991d51f60256/1k0b11a1b";
       script.charset = "UTF-8";
       script.setAttribute("crossorigin", "*");
 

@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { openTawkChat } from '../components/TawkButton';
-
-import TawkButton from '../components/TawkButton';
+import TawkButton, { openTawkChat } from '../components/TawkButton';
 
 const THEME = {
   bg: 'bg-[#05070A]',
@@ -16,14 +14,33 @@ const THEME = {
 
 const Support = () => {
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText("cryptotradenow123@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+  };
+
+  // Explicit function to open Tawk.to Chat Widget
+  const handleStartLiveChat = () => {
+    if (window.Tawk_API && typeof window.Tawk_API.maximize === 'function') {
+      window.Tawk_API.showWidget();
+      window.Tawk_API.maximize();
+    } else {
+      // Fallback if Tawk hasn't loaded yet
+      openTawkChat();
+    }
+  };
 
   return (
     <div className={`min-h-screen ${THEME.bg} ${THEME.fontMain} text-slate-200 selection:bg-blue-500/30`}>
       <div className="max-w-[1000px] mx-auto w-full animate-in slide-in-from-right-8 duration-500">
         
-        {/* Sticky Mobile-First Back Button */}
+        {/* Navigation Header */}
         <nav className={`fixed top-0 left-0 right-0 z-50 ${THEME.glass} border-b ${THEME.border} px-4 py-4 sm:px-8`}>
-          <div className="max-w-[1000px] mx-auto">
+          <div className="max-w-[1000px] mx-auto flex items-center justify-between">
             <button 
               onClick={() => navigate(-1)}
               className="group flex items-center gap-3 text-slate-400 hover:text-blue-400 transition-all"
@@ -35,15 +52,20 @@ const Support = () => {
               </div>
               <span className="text-[11px] font-black uppercase tracking-[0.3em]">Back</span>
             </button>
+
+            {/* Live Status Badge */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08]">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Live Support Online
+              </span>
+            </div>
           </div>
         </nav>
 
         {/* Content Body */}
         <div className="pt-32 pb-20 px-4 space-y-12">
           <header className="text-center space-y-6">
-            {/* <div className="inline-block px-4 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] font-black uppercase tracking-[0.2em]">
-              Help Center v4.2
-            </div> */}
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tighter leading-none">
               System <span className="text-blue-500">Support</span>
             </h2>
@@ -53,6 +75,22 @@ const Support = () => {
           </header>
 
           <div className="grid gap-6">
+            {/* Live Support Escalation Card (Tawk.to Trigger) */}
+            <section className="relative rounded-[40px] bg-gradient-to-br from-blue-500 to-blue-900 p-px shadow-2xl shadow-blue-500/10">
+              <div className={`${THEME.bg} rounded-[39px] p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8`}>
+                <div className="text-center md:text-left space-y-2">
+                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">Live Operation Support</h2>
+                  <p className="text-slate-500 text-sm sm:text-base">Connect directly with an agent via Tawk.to live chat.</p>
+                </div>
+                <button 
+                  className="w-full md:w-auto px-10 py-5 bg-white text-black font-black rounded-2xl text-xs uppercase tracking-widest hover:bg-slate-200 active:scale-[0.98] transition-all cursor-pointer" 
+                  onClick={handleStartLiveChat}
+                >
+                  Start Live Chat
+                </button>
+              </div>
+            </section>
+
             {/* Email Support Card */}
             <section className={`p-8 sm:p-10 rounded-[32px] ${THEME.card} border ${THEME.border} flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group`}>
               <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500" />
@@ -62,43 +100,30 @@ const Support = () => {
                   General inquiries, feature requests, or documentation help. Response within 24 hours.
                 </p>
               </div>
-              <a 
-                href="mailto:lucasgjs890@gmail.com" 
-                className="w-full md:w-auto px-10 py-5 bg-blue-500 text-[#05070A] font-black rounded-2xl text-xs uppercase tracking-widest text-center shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:shadow-blue-500/40 hover:scale-[1.02] transition-all"
-              >
-                Send Message
-              </a>
-            </section>
 
-            {/* Live Support Card */}
-            <section className="relative rounded-[40px] bg-gradient-to-br from-blue-500 to-blue-900 p-px shadow-2xl shadow-blue-500/10">
-              <div className={`${THEME.bg} rounded-[39px] p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8`}>
-                <div className="text-center md:text-left space-y-2">
-                  <h2 className="text-xl  sm:text-2xl font-black text-white tracking-tight">Live Escalation</h2>
-                  <p className="text-slate-500 text-sm sm:text-base">Real-time intervention for critical terminal sessions.</p>
-                </div>
-                <button className="w-full md:w-auto px-10 py-5 bg-white text-black font-black rounded-2xl text-xs uppercase tracking-widest hover:bg-slate-200 active:scale-[0.98] transition-all" onClick={openTawkChat}>
-                  Start Chat
+              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <a 
+                  href="mailto:cryptotradenow123@gmail.com" 
+                  className="px-8 py-5 bg-blue-500 text-[#05070A] font-black rounded-2xl text-xs uppercase tracking-widest text-center shadow-[0_0_30px_rgba(59,130,246,0.2)] hover:shadow-blue-500/40 hover:scale-[1.02] transition-all"
+                >
+                  Send Message
+                </a>
+                <button
+                  onClick={handleCopyEmail}
+                  className="px-5 py-5 bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300 font-bold rounded-2xl text-xs uppercase tracking-widest transition-all"
+                >
+                  {copied ? '✓ Copied' : 'Copy Email'}
                 </button>
               </div>
             </section>
           </div>
 
-          <TawkButton className="hidden" />
-
-          {/* Footer Info */}
-          {/* <footer className="pt-12 text-center">
-            <p className="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em]">
-              Support Status: Operational &bull; {new Date().getFullYear()}
-            </p>
-          </footer> */}
+          {/* Hidden/Floating Tawk Button Controller */}
+          <TawkButton />
         </div>
       </div>
     </div>
   );
 };
 
-/**
- * 3. EXPORT
- */
 export default Support;
