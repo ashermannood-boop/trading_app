@@ -20,7 +20,7 @@ const DEPOSIT_ADDRESSES = {
     Ripple: "rNRjicziHGy93EidfwPCBKMcLDWe4sdCNc"
   },
   USDT: {
-    "Tron (TRC20)": "bc1qmy063afrcmejjk0w5rum8v4wd03em7trxsvacy",
+    "Tron (TRC20)": "TSDvvBZSUaXAWKS34xa3fe15gehJqKbuyi",
     "Ethereum (ERC20)": "0xE0C62E5C141295b739B061c49bcE45d13DDa6e0f",
     "BNB Smart Chain (BEP20)": "0xE0C62E5C141295b739B061c49bcE45d13DDa6e0f"
   },

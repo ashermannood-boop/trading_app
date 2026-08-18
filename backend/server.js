@@ -65,6 +65,7 @@ const allowedOrigins = [
   "https://zaytrade.com",
   "https://trading-app-fdzj.onrender.com",
   "https://trading-app1-t0su.onrender.com",
+  "https://crypto-tradenow.org"
   
 ];
 
