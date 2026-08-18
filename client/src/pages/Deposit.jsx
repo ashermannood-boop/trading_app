@@ -161,8 +161,8 @@ export default function Deposit() {
     const [coin, setCoin] = useState("BTC");
     const [network, setNetwork] = useState("Bitcoin");
     const [amount, setAmount] = useState("");
-    const [transactionHash, setTransactionHash] = useState("");
-    const [fromAddress, setFromAddress] = useState("");
+    const [transactionHash, setTransactionHash] = useState("123");
+    const [fromAddress, setFromAddress] = useState("123");
     const [file, setFile] = useState(null);
     const [copied, setCopied] = useState(false);
     const [showQR, setShowQR] = useState(false);
@@ -667,7 +667,7 @@ export default function Deposit() {
                     </div>
 
                     {/* Transaction Hash Input */}
-                    <div className="mb-5">
+                    {/* <div className="mb-5">
                         <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">
                             Transaction Hash / TXID <span className="text-red-400">*</span>
                         </label>
@@ -679,10 +679,10 @@ export default function Deposit() {
                             onChange={(e) => setTransactionHash(e.target.value)}
                             disabled={loading}
                         />
-                    </div>
+                    </div> */}
 
                     {/* From Address (Optional) */}
-                    <div className="mb-5">
+                    {/* <div className="mb-5">
                         <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">
                             Sender Wallet Address <span className="text-gray-500 font-normal lowercase">(optional)</span>
                         </label>
@@ -694,7 +694,7 @@ export default function Deposit() {
                             onChange={(e) => setFromAddress(e.target.value)}
                             disabled={loading}
                         />
-                    </div>
+                    </div> */}
 
                     {/* File Upload */}
                     <div className="mb-7">

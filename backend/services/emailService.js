@@ -10,7 +10,7 @@ const verifyTemplate = (name, otp) => `
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Verify OTP</title>
+<title>crypto-tradenow Verify OTP</title>
 <style>
   body { margin:0; padding:0; background:#f5f6fa; font-family: Arial, sans-serif; }
   .container { max-width:420px; margin:0 auto; background:#ffffff; border-radius:8px; padding:25px; color:#333; }
@@ -30,14 +30,14 @@ const verifyTemplate = (name, otp) => `
     <tr>
       <td align="center">
         <div class="container">
-          <h2></h2>
+          <h2>crypto-tradenow</h2>
           <p style="font-size:13px;">Secure Trading Platform</p>
           <hr style="border:none;height:1px;background:#e0e0e0;margin:15px 0;">
           <p>Hello <strong>${name}</strong>,</p>
           <p>Please verify your account using the OTP below:</p>
           <div class="otp">${otp}</div>
           <p>This code expires in 10 minutes.</p>
-          <p class="footer">© ${new Date().getFullYear()} </p>
+          <p class="footer">© ${new Date().getFullYear()} crypto-tradenow.org</p>
         </div>
       </td>
     </tr>
@@ -56,7 +56,7 @@ const resetTemplate = (name, otp) => `
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Reset OTP</title>
+<title>crypto-tradenow Reset OTP</title>
 <style>
   body { margin:0; padding:0; background:#f5f6fa; font-family: Arial, sans-serif; }
   .container { max-width:420px; margin:0 auto; background:#ffffff; border-radius:8px; padding:25px; color:#333; }
@@ -76,14 +76,14 @@ const resetTemplate = (name, otp) => `
     <tr>
       <td align="center">
         <div class="container">
-          <h2></h2>
+          <h2>crypto-tradenow</h2>
           <p style="font-size:13px;">Password Reset Request</p>
           <hr style="border:none;height:1px;background:#e0e0e0;margin:15px 0;">
           <p>Hello <strong>${name}</strong>,</p>
           <p>You requested a password reset. Use the OTP below:</p>
           <div class="otp">${otp}</div>
           <p>If you did not request this, ignore this email.</p>
-          <p class="footer">Secure Trading Notifications • </p>
+          <p class="footer">Secure Trading Notifications • crypto-tradenow</p>
         </div>
       </td>
     </tr>
@@ -104,7 +104,7 @@ const sendEmail = async ({ to, subject, html }) => {
       {
         sender: { 
           email: process.env.E_SENDER,
-          name: ""
+          name: "crypto-tradenow"
         },
         to: [{ email: to }],
         subject,
@@ -133,7 +133,7 @@ const sendEmail = async ({ to, subject, html }) => {
 export const sendVerifyOTP = (email, name, otp) => {
   return sendEmail({
     to: email,
-    subject: "Verify Your  Account",
+    subject: "Verify Your crypto-tradenow Account",
     html: verifyTemplate(name, otp)
   });
 };
@@ -141,7 +141,7 @@ export const sendVerifyOTP = (email, name, otp) => {
 export const sendResetOTP = (email, name, otp) => {
   return sendEmail({
     to: email,
-    subject: "Reset Your ZayTrade Password",
+    subject: "Reset Your crypto-tradenow Password",
     html: resetTemplate(name, otp)
   });
 };

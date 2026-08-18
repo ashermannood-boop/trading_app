@@ -7,7 +7,7 @@ export default function Hero() {
   const slides = [
     {
       id: 1,
-      image: assets.hero1,
+      image: assets.logo,
       title: "Start Your Digital Earnings Journey",
       subtitle: "Begin your path to financial freedom with our intuitive platform"
     },
