@@ -61,13 +61,8 @@ app.use((req, res, next) => {
 const allowedOrigins = [
  // "http://localhost:3000",
  // "http://localhost:5173",
- // "https://www.zaytrade.com",
- // "https://zaytrade.com",
- // "https://trading-app-fdzj.onrender.com",
- // "https://trading-app1-t0su.onrender.com",
-"https://tradingapp-production-8da2.up.railway.app/"
-  "https://crypto-tradenow.org"
-  
+"https://tradingapp-production-8da2.up.railway.app",
+"https://crypto-tradenow.org",
 ];
 
 app.use(
