@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 
 /* ---------- CORS ---------- */
 const allowedOrigins = [
- // "http://localhost:3000",
+"http://localhost:3000",
  // "http://localhost:5173",
 "https://tradingapp-production-8da2.up.railway.app",
 "https://crypto-tradenow.org",
