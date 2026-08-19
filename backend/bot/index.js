@@ -91,7 +91,7 @@ Built for speed, not confusion.`,
       console.error("❌ Error in /start:", err);
       await bot.sendMessage(
         chatId,
-        "⚠️ Something went wrong. Please try again."
+        "⚠️ Something went wrong. Please try again!!!."
       );
     }
   });
