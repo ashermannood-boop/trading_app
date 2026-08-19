@@ -10,6 +10,11 @@ COPY . .
 # 4. Install Root dependencies (if any)
 RUN npm install
 
+# --- FIX: Pass Railway variables into the frontend build process ---
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+# -------------------------------------------------------------------
+
 # 5. Build the Frontend (React/Vite)
 RUN cd client && npm install && npm run build
 
@@ -23,5 +28,4 @@ ENV NODE_ENV=production
 EXPOSE 5000
 
 # 9. Start the server from the backend folder
-# This matches your server.js logic
 CMD ["node", "backend/server.js"]
