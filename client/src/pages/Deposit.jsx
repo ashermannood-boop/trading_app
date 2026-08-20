@@ -463,7 +463,7 @@ export default function Deposit() {
                     </div>
                 )}
 
-                <div className="bg-[#0e1424]/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-gray-800/80 p-4 sm:p-7 md:p-9 shadow-2xl">
+                <div className="sm:bg-[#0e1424]/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl sm:border sm:border-gray-800/80 p-2 sm:p-7 md:p-9 shadow-2xl">
                     <div className="text-center mb-6 sm:mb-8">
                         <h1 className="text-xl sm:text-3xl font-bold text-white tracking-tight">Fund Your Account</h1>
                         <p className="text-gray-400 text-xs sm:text-sm mt-1.5">Select your preferred asset and follow the transfer instructions.</p>
@@ -502,11 +502,11 @@ export default function Deposit() {
                                                     <h4 className="text-white font-semibold text-sm truncate">
                                                         {data.name || key}
                                                     </h4>
-                                                    {isSelected && (
+                                                    {/* {isSelected && (
                                                         <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 ml-1">
                                                             <FaCheck className="text-[9px] text-white" />
                                                         </div>
-                                                    )}
+                                                    )} */}
                                                 </div>
                                                 <p className="text-gray-400 text-xs font-medium truncate mt-0.5">
                                                     {data.subtitle || `${key} Network`}
@@ -689,7 +689,7 @@ export default function Deposit() {
                                         <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center text-blue-400 flex-shrink-0">
                                             <FaImage className="text-xl" />
                                         </div>
-                                    )}ss
+                                    )}
                                     <div className="min-w-0 flex-1">
                                         <p className="text-xs font-semibold text-white truncate">{file.name}</p>
                                         <p className="text-[10px] text-gray-400 mt-0.5">

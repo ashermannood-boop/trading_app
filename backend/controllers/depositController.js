@@ -81,12 +81,14 @@ export const createDeposit = async (req, res) => {
     }
 
     // Check KYC status
+  /*
     if (req.user.kycStatus !== 'approved') {
       return res.json({
         success: false,
         message: 'KYC verification required'
       });
     }
+  */
 
     // Check account verification
     if (!req.user.isAccountVerified) {
