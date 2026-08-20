@@ -542,7 +542,7 @@ export default function Deposit() {
                     </div>
 
                     {/* Address & QR Code */}
-                    <div className="mb-6 p-3.5 sm:p-4 rounded-2xl bg-[#090e1a] border border-gray-800/80">
+                    <div className="mb-6 p-1 sm:p-4 rounded-2xl sm:bg-[#090e1a] sm:border sm:border-gray-800/80">
                         <div className="flex justify-between items-center mb-2">
                             <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
                                 <Wallet className="w-3.5 h-3.5 text-blue-400" />
@@ -567,10 +567,10 @@ export default function Deposit() {
                                     </div>
                                 ) : (
                                     <>
-                                        <div className="p-3 bg-white rounded-2xl shadow-xl">
+                                        <div className="p-2 bg-white rounded-2xl shadow-xl">
                                             <canvas ref={qrCanvasRef} className="rounded-lg" />
                                         </div>
-                                        <p className="text-gray-300 mt-3 text-center font-mono text-xs break-all max-w-xs bg-gray-900/60 p-2 rounded-lg border border-gray-800 select-all">
+                                        <p className="text-gray-300 mt-3 text-center font-mono text-xs break-all max-w-xs bg-gray-900/60 p-1 rounded-lg border border-gray-800 select-all">
                                             {address}
                                         </p>
                                         <div className="flex gap-2.5 mt-3 w-full justify-center">
