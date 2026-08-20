@@ -73,7 +73,7 @@ export const createDeposit = async (req, res) => {
     const userId = req.user._id;
 
     // Validation
-    if (!currency || !network || !amount || !txHash || !toAddress) {
+    if (!currency || !network || !amount|| !toAddress) {
       return res.json({
         success: false,
         message: 'All fields are required: currency, network, amount, txHash, toAddress'
@@ -116,6 +116,7 @@ export const createDeposit = async (req, res) => {
     };
 
     const minAmount = minAmounts[currency] || 1;
+  /*
     if (amountNum < minAmount) {
       return res.json({
         success: false,
@@ -123,7 +124,10 @@ export const createDeposit = async (req, res) => {
       });
     }
 
+    */
+
     // Check for duplicate transaction
+    /*
     const existingDeposit = await Deposit.findOne({ txHash });
 
     if (existingDeposit) {
@@ -134,7 +138,7 @@ export const createDeposit = async (req, res) => {
     }
 
     // Check network availability
-    /*
+   
     if (!DEPOSIT_ADDRESSES[currency]?.[network]) {
       return res.json({
         success: false,
