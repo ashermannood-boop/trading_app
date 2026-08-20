@@ -123,6 +123,7 @@ export const createDeposit = async (req, res) => {
 
     // Check for duplicate transaction
     const existingDeposit = await Deposit.findOne({ txHash });
+
     if (existingDeposit) {
       return res.json({
         success: false,
@@ -131,12 +132,14 @@ export const createDeposit = async (req, res) => {
     }
 
     // Check network availability
+    /*
     if (!DEPOSIT_ADDRESSES[currency]?.[network]) {
       return res.json({
         success: false,
         message: `Network ${network} not available for ${currency}`
       });
     }
+      */
 
     // Upload proof image
     let proofImage = null;
