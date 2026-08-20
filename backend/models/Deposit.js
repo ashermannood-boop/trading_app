@@ -22,13 +22,13 @@ const depositSchema = new mongoose.Schema({
   currency: {
     type: String,
     required: true,
-    enum: ['BTC', 'ETH', 'USDT','BNB'],
+//    enum: ['BTC', 'ETH', 'USDT','BNB'],
     uppercase: true
   },
   network: {
     type: String,
     required: true,
-    enum: ['Bitcoin', 'Lightning', 'Ethereum', 'Arbitrum', 'TronTRC20', 'ERC20', 'BEP20']
+  //  enum: ['Bitcoin', 'Lightning', 'Ethereum', 'Arbitrum', 'TronTRC20', 'ERC20', 'BEP20']
   },
   
   // Amounts
