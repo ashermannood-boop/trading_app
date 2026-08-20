@@ -62,7 +62,7 @@ const depositSchema = new mongoose.Schema({
   },
   txHash: {
     type: String,
-    required: true,
+  //  required: true,
    // index: true
   },
   confirmations: {
