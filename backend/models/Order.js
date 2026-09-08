@@ -1,19 +1,7 @@
 import mongoose from "mongoose";
 import userModel from "./usermodel.js";
-const durationRates = {
-  30: 100,
-  50: 100,
-  60: 100,
-  90: 100,
-  120: 100,
-  180: 100,
-  240: 100,
-  365: 100
-};
 
-{
-  /*
- const durationRates = {
+const durationRates = {
   30: 12,
   50: 12,
   60: 18,
@@ -22,9 +10,7 @@ const durationRates = {
   180: 25,
   240: 28,
   365: 30
-}; 
-  */
-}
+};
 
 const orderSchema = new mongoose.Schema(
   {
@@ -33,7 +19,7 @@ const orderSchema = new mongoose.Schema(
     symbolName: { type: String, required: true },
     coinId: { type: String, required: true },
     direction: { type: String, enum: ['buy', 'sell'], required: true },
-    amount: { type: Number, required: true, min: 1 },
+    amount: { type: Number, required: true, min: 100 },
     leverage: { type: Number, default: 1, min: 1, max: 20 },
     entryPrice: { type: Number, required: true },
     exitPrice: { type: Number },
@@ -88,7 +74,7 @@ orderSchema.methods.preSaveLogic = async function () {
   }
 
   if (this.isNew) {
-    const rate = durationRates[this.duration] || 100;
+    const rate = durationRates[this.duration] || 12;
     this.expectedReturn = this.amount * (rate / 100);
     this.fee = 0; // Absolute free trades
     this.totalPayout = this.amount + this.expectedReturn;
@@ -129,10 +115,10 @@ orderSchema.methods.calculateProfitLoss = async function () {
 
 
     if (this.isDemo) {
-      /// 70% chance to win, 30% chance to lose for demo users
+      /// 80% chance to win, 20% chance to lose for demo users
       let randomFactor = Math.random();
       console.log(`[DEMO ORDER] Random Factor: ${randomFactor.toFixed(4)} | RateP: ${rateP} | Leverage: ${this.leverage || 1}`);
-      if (randomFactor < 0.3) {
+      if (randomFactor < 0.1) {
         this.wasRandomLose = true;
         this.randomLossPercentage = rateP;
         percentage = -rateP * (this.leverage || 1);

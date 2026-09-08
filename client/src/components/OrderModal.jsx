@@ -1,3 +1,4 @@
+// components/OrderModal.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { X, TrendingUp, TrendingDown, Clock, Zap, Shield, AlertCircle, RefreshCw } from "lucide-react";
 import { toast } from "react-toastify";
@@ -7,10 +8,13 @@ import { useAuth } from "../context/AuthContext";
 import { ClipLoader } from "react-spinners";
 
 const DURATIONS = [
-    { id: 60, label: "1 min" },
-    { id: 120, label: "2 min" },
-    { id: 180, label: "3 min" },
-    { id: 240, label: "4 min" }
+    { id: 30, rate: 12, min: 100, max: 5000 },
+    { id: 60, rate: 18, min: 5000, max: 10000 },
+    { id: 90, rate: 20, min: 10000, max: 15000 },
+    { id: 120, rate: 22, min: 15000, max: 20000 },
+    { id: 180, rate: 25, min: 20000, max: 30000 },
+    { id: 240, rate: 28, min: 30000, max: 40000 },
+    { id: 365, rate: 30, min: 40000, max: 60000 }
 ];
 
 export default function OrderModal({
@@ -31,7 +35,7 @@ export default function OrderModal({
         isDemoMode
     } = useAuth();
 
-    const [selected, setSelected] = useState(60);
+    const [selected, setSelected] = useState(30);
     const [amount, setAmount] = useState("");
     const [leverage] = useState(1);
     const [error, setError] = useState("");
@@ -42,7 +46,7 @@ export default function OrderModal({
         if (open) {
             setAmount("");
             setError("");
-            setSelected(60);
+            setSelected(30);
         }
     }, [open]);
 
@@ -71,8 +75,9 @@ export default function OrderModal({
 
     const calculateReturn = () => {
         const numAmount = parseFloat(amount);
-        if (isNaN(numAmount) || numAmount === 0) return "0.00";
-        return (numAmount * leverage).toFixed(2);
+        if (isNaN(numAmount) || numAmount === 0 || !selectedItem) return "0.00";
+        const base = numAmount * (selectedItem.rate / 100);
+        return (base * leverage).toFixed(2);
     };
 
     const calculateFee = () => "0.00";
@@ -80,7 +85,8 @@ export default function OrderModal({
     const calculateTotalPayout = () => {
         const numAmount = parseFloat(amount);
         if (isNaN(numAmount) || numAmount === 0) return "0.00";
-        return (numAmount * leverage).toFixed(2);
+        const returnAmount = parseFloat(calculateReturn());
+        return (numAmount + returnAmount).toFixed(2);
     };
 
     const handleAmountChange = (value) => {
@@ -88,9 +94,13 @@ export default function OrderModal({
         setError("");
         setCalculating(true);
 
-        if (value) {
+        if (value && selectedItem) {
             const numValue = parseFloat(value);
-            if (numValue > availableAmount * leverage) {
+            if (numValue < selectedItem.min) {
+                setError(`Minimum amount is $${selectedItem.min}`);
+            } else if (numValue > selectedItem.max) {
+                setError(`Maximum amount is $${selectedItem.max}`);
+            } else if (numValue > availableAmount * leverage) {
                 setError(`Insufficient available balance for ${leverage}x leverage`);
             }
         }
@@ -101,7 +111,7 @@ export default function OrderModal({
 
     const handleConfirm = () => {
         const numAmount = parseFloat(amount);
-        if (isNaN(numAmount) || numAmount <= 0) {
+        if (isNaN(numAmount) || numAmount === 0) {
             setError("Please enter a valid amount");
             return;
         }
@@ -124,7 +134,7 @@ export default function OrderModal({
     };
 
     const formatCurrency = (value) => {
-        return parseFloat(value || 0).toLocaleString('en-US', {
+        return parseFloat(value).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         });
@@ -170,7 +180,7 @@ export default function OrderModal({
                             </div>
                             <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-green-200/40 dark:border-green-900/40 text-xs">
                                 <span className="text-gray-500 dark:text-gray-400">
-                                    Standard profile verification rules apply.
+                                    {availableAmount < (selectedItem?.min || 0) ? `Minimum allocation requires $${selectedItem?.min}` : "Standard profile verification rules apply."}
                                 </span>
                                 {!isDemoMode && (
                                     <button onClick={() => setOpenConvert(true)} className="flex items-center gap-1 font-medium text-green-600 dark:text-green-400 hover:underline">
@@ -182,20 +192,22 @@ export default function OrderModal({
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Term Duration</label>
-                            <div className="grid grid-cols-4 gap-2">
+                            <div className="grid grid-cols-3 gap-2">
                                 {DURATIONS.map((item) => (
                                     <button
                                         key={item.id}
                                         onClick={() => {
                                             setError('');
+                                            setAmount('');
                                             setSelected(item.id);
                                         }}
                                         className={`p-3 rounded-xl border text-center transition-all ${selected === item.id
                                             ? "border-green-500 bg-green-500/5 text-green-600 dark:text-green-400 font-semibold"
-                                            : "border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
+                                            : "border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:hover:border-gray-700"
                                             }`}
                                     >
-                                        <div className="text-sm">{item.label}</div>
+                                        <div className="text-sm">{item.id}s</div>
+                                        <div className="text-xs opacity-80 mt-0.5">+{item.rate}%</div>
                                     </button>
                                 ))}
                             </div>
@@ -208,7 +220,7 @@ export default function OrderModal({
                                 <input
                                     value={amount}
                                     onChange={(e) => handleAmountChange(e.target.value)}
-                                    placeholder="Enter amount"
+                                    placeholder={`Range: ${selectedItem?.min} - ${selectedItem?.max}`}
                                     type="number"
                                     className="w-full p-3 pl-8 text-base rounded-xl border border-gray-200 dark:border-gray-400 bg-transparent focus:outline-none focus:border-green-500 transition-colors"
                                 />
@@ -224,8 +236,8 @@ export default function OrderModal({
                             ) : (
                                 <>
                                     <div className="flex justify-between text-gray-500">
-                                        <span>Order Amount</span>
-                                        <span className="text-green-500 font-medium">${formatCurrency(calculateReturn())}</span>
+                                        <span>Yield Return</span>
+                                        <span className="text-green-500 font-medium">+${formatCurrency(calculateReturn())}</span>
                                     </div>
                                     <div className="flex justify-between text-gray-500">
                                         <span>Processing Fee (Free)</span>
@@ -241,7 +253,7 @@ export default function OrderModal({
 
                         <button
                             onClick={handleConfirm}
-                            disabled={!!error || !amount || parseFloat(amount) <= 0 || isCheckingEligibility || orderLoading}
+                            disabled={!!error || !amount || parseFloat(amount) === 0 || isCheckingEligibility || orderLoading}
                             className={`w-full py-3.5 rounded-xl font-medium text-white transition-all flex items-center justify-center gap-2 shadow-sm ${direction === 'buy' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} disabled:opacity-40 disabled:cursor-not-allowed`}
                         >
                             {isCheckingEligibility ? (
@@ -252,7 +264,7 @@ export default function OrderModal({
                             ) : orderLoading ? (
                                 <>
                                     <ClipLoader color="#ffffff" size={16} />
-                                    Processing order...
+                                    proccessing order...
                                 </>
                             ) : (
                                 `Confirm Execution (${direction === 'buy' ? 'Buy' : 'Sell'})`

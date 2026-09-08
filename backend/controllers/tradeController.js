@@ -8,29 +8,9 @@ export const tradeController = {
   placeOrder: async (req, res) => {
     try {
       const userId = req.user.id;
-      const {
-        symbol,
-        symbolName,
-        coinId,
-        direction,
-        amount,
-        leverage = 1,
-        duration,
-        entryPrice,
-        isDemo
-      } = req.body;
-
-      console.log("Place order request:", { userId, symbol, direction, amount, leverage, duration, entryPrice, isDemo });
+      const { symbol, symbolName, coinId, direction, amount, leverage = 1, duration, entryPrice, isDemo } = req.body;
 
       const isDemoMode = isDemo === true || isDemo === 'true';
-
-      if (isDemoMode) {
-        return res.json({
-          success: false,
-          message: "This feature is unavailable for now."
-        });
-
-      }
 
       const requiredFields = ['symbol', 'direction', 'amount', 'duration'];
       const missingFields = requiredFields.filter(field => !req.body[field]);
@@ -75,30 +55,9 @@ export const tradeController = {
       const activeLeverage = isDemoMode ? 1 : parseInt(leverage);
 
       const durationRates = {
-        30: 100,
-        50: 100,
-        60: 100,
-        90: 100,
-        120: 100,
-        180: 100,
-        240: 100,
-        365: 100
+        30: 12, 50: 12, 60: 18, 90: 20, 120: 22, 180: 25, 240: 28, 365: 30
       };
-
-      {/*
-        const durationRates = {
-        30: 12,
-        50: 12,
-        60: 18,
-        90: 20,
-        120: 22,
-        180: 25,
-        240: 28,
-        365: 30
-      };
-        */}
-
-      const rate = durationRates[duration] || 100;
+      const rate = durationRates[duration] || 12;
       const expectedReturn = (parseFloat(amount) * (rate / 100)) * activeLeverage;
 
       const orderData = {
