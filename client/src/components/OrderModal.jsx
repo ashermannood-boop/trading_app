@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { ClipLoader } from "react-spinners";
 
 const DURATIONS = [
-    { id: 30, rate: 12, min: 100, max: 5000 },
+    { id: 30, rate: 12, min: 10, max: 5000 },
     { id: 60, rate: 18, min: 5000, max: 10000 },
     { id: 90, rate: 20, min: 10000, max: 15000 },
     { id: 120, rate: 22, min: 15000, max: 20000 },
